@@ -1,8 +1,14 @@
 import React, { useState } from "react";
 
-function ListingCard( { listing } ) {
+function ListingCard( { listing, onDelete } ) {
 
   const [favorited, updateFavorite] = useState(false)
+
+  function handleDelete() {
+    fetch(`http://localhost:6001/listings/${listing.id}`, {method: 'DELETE'})
+    .then(r => r.json())
+    .then(() => onDelete(listing))
+  }
 
   return (
     <li className="card">
@@ -18,7 +24,7 @@ function ListingCard( { listing } ) {
         )}
         <strong>{listing.description}</strong>
         <span> · {listing.location}</span>
-        <button className="emoji-button delete">🗑</button>
+        <button className="emoji-button delete" onClick={handleDelete}>🗑</button>
       </div>
     </li>
   );
